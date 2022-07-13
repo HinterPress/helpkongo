@@ -11,15 +11,16 @@ let minRandNumber = 1;
 let maxRandNumber = 10;
 
 let questionTime = [];
+let userInfo = [];
+
+var timerVariable = setInterval(countUpTimer, 1000);
+var timeStop = false;
+var totalSeconds = 0;
 
 const questionElement = document.getElementById("question");
 const levelElement = document.getElementById("level");
 
 levelElement.innerHTML = level;
-
-var timerVariable = setInterval(countUpTimer, 1000);
-var timeStop = false;
-var totalSeconds = 0;
 
 function createAudio(status) {
     const getAudioContent = document.querySelector('.audio');
@@ -39,8 +40,16 @@ function checkResult(number) {
             questionTime.push({ "question": questionString, 'time': document.getElementById("timeshow").innerHTML });
             roundplace++;
             timeStop = true;
+            if (!userInfo['questions']) {
+                userInfo['questions'] = 1;
+            }
+            if (!userInfo['time']) {
+                userInfo['time'] = 0;
+            }
+            userInfo['time'] = userInfo['time'] += totalSeconds;
             totalSeconds = 0;
             successNumber++;
+            userInfo['questions'] = userInfo['questions'] += 1;
             document.querySelector('.success-div').innerHTML = successNumber;
             questionElement.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span>" + resultStatus;
             setTimeout(() => {
@@ -64,6 +73,7 @@ function generateRandomIntegerInRange(min, max) {
 function start(page) {
     const getChooseTypeMain = document.getElementById("choose-type-main");
     const getChooseTypeName = document.getElementById("choose-type-name");
+    const getChooseResult = document.getElementById("choose-result");
     const questionContent = document.getElementById("questions");
     const name = document.getElementById("nameChoose");
     const lastname = document.getElementById("lastnameChoose");
@@ -85,12 +95,27 @@ function start(page) {
         } else {
             lastname.style.setProperty('border-color', '#000', 'important');
         }
-
+        userInfo.push({ "name": name.value, "lastname": lastname.value });
         getChooseTypeName.classList.remove('d-flex');
         getChooseTypeName.style.display = 'none';
-        questionContent.style.removeProperty = 'display';
+        questionContent.style.display = 'block';
+        totalSeconds = 0;
+    } else if (page == 'result') {
+        if (!userInfo['time']) {
+            userInfo['time'] = 0;
+        }
+        userInfo['time'] = userInfo['time'] += totalSeconds;
+        questionContent.style.display = 'none';
+        getChooseResult.style.display = 'block';
+        userInfo['wrong'] = wrongNumber;
+        userInfo['success'] = successNumber;
+        document.getElementById("resultlevel").innerHTML = level;
+        document.getElementById("countanswer").innerHTML = userInfo['questions'];
+        document.getElementById("resulttrue").innerHTML = userInfo['success'];
+        document.getElementById("resultfalse").innerHTML = userInfo['wrong'];
+        const secondsToMinutes = Math.floor(userInfo['time'] / 60) + ':' + ('0' + Math.floor(userInfo['time'] % 60)).slice(-2);
+        document.getElementById("resulttime").innerHTML = secondsToMinutes;
     }
-
 }
 
 function getRandContentNumber(element, min, max) {
@@ -138,12 +163,10 @@ function getRandContentNumber(element, min, max) {
         let button = '<div class="col"><button class="btn-rand-quest" onclick="checkResult(' + e + ')" role="button">' + e + '</button></div>';
         document.getElementById("answersbutton").innerHTML += button;
     });
-
     if (oldFirstnumber === getFirstNumber || oldTwoNumber === getTwoNumber) {
         levelRange();
         return;
     }
-
     element.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span> <img src='img/whatres.png' style='width: 11%;'>";
 }
 
@@ -153,6 +176,7 @@ function countUpTimer() {
         var hour = Math.floor(totalSeconds / 3600);
         var minute = Math.floor((totalSeconds - hour * 3600) / 60);
         var seconds = totalSeconds - (hour * 3600 + minute * 60);
+
         seconds = seconds < 10 ? "0" + seconds : seconds;
         minute = minute < 10 ? "0" + minute : minute;
         document.getElementById("timeshow").innerHTML = minute + " : " + seconds;
