@@ -51,14 +51,12 @@ body{
     background: #fff;
     border-radius: 5px;
     outline: none;
-    
     border: none;
     cursor: pointer;
     text-align: center;
     transition: all 0.2s linear;
     margin: 7% auto;
     letter-spacing: 0.05em;
-
 }
 
 .btn-rand-quest {
@@ -168,6 +166,7 @@ a,label,p, h1,h2,h3,h4,h5,h6{
     border: 1px solid #000;
     margin-top: -25px;
 }
+
 .dashboard-head-time h6{
     position: absolute;
     left: 15px;
@@ -202,6 +201,7 @@ img{
     color: #fff;
     border: 1px solid #000;
 }
+
 .wrong-div{
     position: relative;
     display: inline-block;
@@ -226,4 +226,18 @@ img{
     border: 1px solid #000!important;
     box-shadow: none!important;
     outline: none!important;
+}
+
+.dashboard-result-item h6{
+    display: inline-block;
+    background-color: #fff;
+    border-bottom-left-radius: 15px 255px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    border: 1px solid #000;
 }
