@@ -14,34 +14,61 @@
 <body>
     <div class="content">
         <div class="d-flex justify-content-center">
-            <div class="col-xl-4 col-12 col-sm-6 content mt-3  p-3 mt-2">
+            <div class="col-xl-5 col-lg-6 col-12 col-sm-8 content mt-3  p-3 mt-2">
                 <div class="col-12 mt-4 border-top ps-5 pe-5 question-content">
-                    <div class="col-5 dashboard-head-time">
-                        <h6 id="timeshow"> 00 : 00</h6>
-                    </div>
-                    <div class="col-5 dashboard-head-level">
-                        <h6>დონე - <span id="level"></span></h6>
-                    </div>
-                    <div class="col-12 text-center">
-                        <div class="row row-cols-2 mt-2">
-                            <div class="col">
-                                <p class="success-div">
-                                    0
-                                </p>
+                    <div class="d-flex justify-content-center" id="choose-type-main">
+                        <div class="mt-5 mb-5 d-inline-block">
+                            <div class="col-12 mt-2">
+                                <button class="default-btn w-100" onclick="start('choose')">დაწყება</button>
                             </div>
-                            <div class="col">
-                                <p class="wrong-div">
-                                    0
-                                </p>
+                            <div class="col-12 mt-4">
+                                <button class="default-btn w-100">რეიტინგი</button>
                             </div>
                         </div>
                     </div>
-                    <div id="question" style='height:62px' class="mt-1 mb-3 text-center d-inline-block"></div>
-                    <div class="col-12 d-inline-block mb-5 mt-4">
-                        <div class="row" id="answersbutton"></div>
+                    <div class="justify-content-center" id="choose-type-name" style="display: none;">
+                        <div class="mt-5 mb-5 d-inline-block">
+                            <div class="col-12">
+                                <input type="text" class="form-control" name="name" id="nameChoose" placeholder="სახელი">
+                            </div>
+                            <div class="col-12">
+                                <input type="text" class="form-control mt-3" name="lastname" id="lastnameChoose" placeholder="გვარი">
+                            </div>
+                            <div class="col-12">
+                                <button class="default-btn w-100 mt-3" onclick="start('questions')">დაწყება</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-12 d-inline-block text-end">
-                        <button class="btn-end mb-3 mt-3" onclick="endresult();">დასრულება</button>
+                    <div id="questions" style="display: none">
+                        <div class="col-5 dashboard-head-time">
+                            <h6 id="timeshow"> 00 : 00</h6>
+                        </div>
+                        <div class="col-5 dashboard-head-level">
+                            <h6>დონე - <span id="level"></span></h6>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="row row-cols-2 mt-2">
+                                <div class="col">
+                                    <p class="success-div">
+                                        0
+                                    </p>
+                                </div>
+                                <div class="col">
+                                    <p class="wrong-div">
+                                        0
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div id="question" style='height:62px' class="mt-1 mb-3 text-center d-inline-block"></div>
+                        </div>
+                        <div class="col-12 d-inline-block mb-5 mt-4">
+                            <div class="row" id="answersbutton"></div>
+                        </div>
+                        <div class="col-12 d-inline-block text-end">
+                            <button class="btn-end mb-3 mt-3" onclick="endresult();">დასრულება</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,150 +77,7 @@
     <div class="audio">
     </div>
 
-    <script>
-        let level = 1;
-        let roundplace = 1;
-
-        let successNumber = 0;
-        let wrongNumber = 0;
-
-        let getFirstNumber = 0;
-        let getTwoNumber = 0;
-
-        let minRandNumber = 1;
-        let maxRandNumber = 10;
-
-        let questionTime = [];
-
-        const questionElement = document.getElementById("question");
-        const levelElement = document.getElementById("level");
-
-        levelElement.innerHTML = level;
-
-        var timerVariable = setInterval(countUpTimer, 1000);
-        var timeStop = false;
-        var totalSeconds = 0;
-
-        function createAudio(status) {
-            const getAudioContent = document.querySelector('.audio');
-            getAudioContent.innerHTML = '<audio controls autoplay><source src="music/' + status + '.mp3" type="audio/mpeg"></audio>';
-        }
-
-        getRandContentNumber(questionElement, 2, 10);
-
-        function checkResult(number) {
-            const resultPlus = getFirstNumber + getTwoNumber;
-            let resultStatus = "";
-            if (!timeStop) {
-                if (resultPlus === number) {
-                    createAudio('true');
-                    resultStatus = "<img src='img/true.png' style='width: 9.1%'>";
-                    const questionString = getFirstNumber + " + " + getTwoNumber;
-                    questionTime.push({ "question": questionString, 'time': document.getElementById("timeshow").innerHTML });
-                    roundplace++;
-                    timeStop = true;
-                    totalSeconds = 0;
-                    successNumber++;
-                    document.querySelector('.success-div').innerHTML = successNumber;
-                    questionElement.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span>" + resultStatus;
-                    setTimeout(() => {
-                        timeStop = false;
-                        levelRange();
-                    }, 500);
-                } else {
-                    createAudio('falsee');
-                    resultStatus = "<img src='img/false1.png' style='width: 9.1%'>";
-                    wrongNumber++;
-                    document.querySelector('.wrong-div').innerHTML = wrongNumber;
-                    questionElement.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span>" + resultStatus;
-                }
-            }
-        }
-
-        function generateRandomIntegerInRange(min, max) {
-            return Math.floor(Math.random() * (max - min + 1)) + min;
-        }
-
-        function getRandContentNumber(element, min, max) {
-            var oldFirstnumber = getFirstNumber;
-            var oldTwoNumber = getTwoNumber;
-
-            var getFirstNumberArray = [];
-            var getTwoNumberArray = [];
-
-            for (let index = 0; index < 5; index++) {
-                let numberFirst = generateRandomIntegerInRange(min, max);
-                if (getFirstNumberArray.includes(numberFirst)) {
-                    numberFirst += 1;
-                }
-                getFirstNumberArray.push(numberFirst);
-            }
-
-            for (let index = 0; index < 5; index++) {
-                let numberTwo = generateRandomIntegerInRange(min, max);
-                if (getTwoNumberArray.includes(numberTwo)) {
-                    numberTwo += 1;
-                }
-                getTwoNumberArray.push(numberTwo);
-            }
-
-            getFirstNumber = getFirstNumberArray[Math.floor(Math.random() * getFirstNumberArray.length)];
-            getTwoNumber = getTwoNumberArray[Math.floor(Math.random() * getTwoNumberArray.length)];
-            let answerNumber = getFirstNumber + getTwoNumber;
-            let numberAnswer = [answerNumber];
-
-            for (let index = 0; index < 3; index++) {
-                let minlocal = answerNumber - 15;
-                if (minlocal < 1) {
-                    minlocal = 1;
-                }
-                var getNumber = generateRandomIntegerInRange(minlocal, answerNumber + 4);
-                if (getNumber === numberAnswer || numberAnswer.includes(getNumber) || getNumber === 0) {
-                    getNumber += 1;
-                }
-                numberAnswer.push(getNumber);
-            }
-            numberAnswer.sort(function () { return 0.5 - Math.random() });
-            document.getElementById("answersbutton").innerHTML = "";
-            numberAnswer.forEach(function (e) {
-                let button = '<div class="col"><button class="btn-rand-quest" onclick="checkResult(' + e + ')" role="button">' + e + '</button></div>';
-                document.getElementById("answersbutton").innerHTML += button;
-            });
-
-            if (oldFirstnumber === getFirstNumber || oldTwoNumber === getTwoNumber) {
-                levelRange();
-                return;
-            }
-
-            element.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span> <img src='img/whatres.png' style='width: 11%;'>";
-        }
-
-        function countUpTimer() {
-            if (!timeStop) {
-                ++totalSeconds;
-                var hour = Math.floor(totalSeconds / 3600);
-                var minute = Math.floor((totalSeconds - hour * 3600) / 60);
-                var seconds = totalSeconds - (hour * 3600 + minute * 60);
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-                minute = minute < 10 ? "0" + minute : minute;
-                document.getElementById("timeshow").innerHTML = minute + " : " + seconds;
-            }
-        }
-
-        function levelRange() {
-            if (roundplace === 5) {
-                level++;
-                roundplace = 1;
-                levelElement.innerHTML = level;
-                minRandNumber = minRandNumber + 9;
-                maxRandNumber = maxRandNumber + 30;
-                createAudio("nextlevel");
-            }
-            getRandContentNumber(questionElement, minRandNumber, maxRandNumber);
-        }
-
-    </script>
-
+    <script src="js/main.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>

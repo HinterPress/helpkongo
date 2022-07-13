@@ -61,6 +61,38 @@ function generateRandomIntegerInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function start(page) {
+    const getChooseTypeMain = document.getElementById("choose-type-main");
+    const getChooseTypeName = document.getElementById("choose-type-name");
+    const questionContent = document.getElementById("questions");
+    const name = document.getElementById("nameChoose");
+    const lastname = document.getElementById("lastnameChoose");
+    if (page == 'choose') {
+        getChooseTypeMain.classList.remove('d-flex');
+        getChooseTypeMain.style.display = 'none';
+        getChooseTypeName.classList.add('d-flex');
+        getChooseTypeName.style.removeProperty = 'display';
+    } else if (page == 'questions') {
+        if (name.value.length < 3) {
+            name.style.setProperty('border-color', '#ff0909', 'important');
+            return;
+        } else {
+            name.style.setProperty('border-color', '#000', 'important');
+        }
+        if (lastname.value.length < 3) {
+            lastname.style.setProperty('border-color', '#ff0909', 'important');
+            return;
+        } else {
+            lastname.style.setProperty('border-color', '#000', 'important');
+        }
+
+        getChooseTypeName.classList.remove('d-flex');
+        getChooseTypeName.style.display = 'none';
+        questionContent.style.removeProperty = 'display';
+    }
+
+}
+
 function getRandContentNumber(element, min, max) {
     var oldFirstnumber = getFirstNumber;
     var oldTwoNumber = getTwoNumber;

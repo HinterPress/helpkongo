@@ -100,7 +100,7 @@ body{
   box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
 }
 
-.btn-end{
+.default-btn{
     align-self: center;
     background-color: #fff;
     background-image: none;
@@ -131,23 +131,22 @@ body{
     touch-action: manipulation;
 }
 
-.btn-end:hover {
+.default-btn:hover {
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
     transform: translate3d(0, 2px, 0);
 }
   
-.btn-end:focus {
+.default-btn:focus {
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
 }
 
-  
 a,label,p, h1,h2,h3,h4,h5,h6{
     font-family: BPGNinoMtavruli;
 }
+
 .audio{
     opacity: 0;
 }
-
 
 .question-content{
     background-image: linear-gradient(-225deg, #E3FDF5 50%, #FFE6FA 50%);
@@ -217,4 +216,14 @@ img{
     font-size: 22px;
     color: #fff;
     border: 1px solid #000;
+}
+
+.form-control{
+    border-bottom-left-radius: 15px 255px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    border: 1px solid #000!important;
+    box-shadow: none!important;
+    outline: none!important;
 }
