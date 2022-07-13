@@ -119,11 +119,11 @@ function start(page) {
 }
 
 function getRandContentNumber(element, min, max) {
-    var oldFirstnumber = getFirstNumber;
-    var oldTwoNumber = getTwoNumber;
+    let oldFirstnumber = getFirstNumber;
+    let oldTwoNumber = getTwoNumber;
 
-    var getFirstNumberArray = [];
-    var getTwoNumberArray = [];
+    let getFirstNumberArray = [];
+    let getTwoNumberArray = [];
 
     for (let index = 0; index < 5; index++) {
         let numberFirst = generateRandomIntegerInRange(min, max);
@@ -173,9 +173,9 @@ function getRandContentNumber(element, min, max) {
 function countUpTimer() {
     if (!timeStop) {
         ++totalSeconds;
-        var hour = Math.floor(totalSeconds / 3600);
-        var minute = Math.floor((totalSeconds - hour * 3600) / 60);
-        var seconds = totalSeconds - (hour * 3600 + minute * 60);
+        let hour = Math.floor(totalSeconds / 3600);
+        let minute = Math.floor((totalSeconds - hour * 3600) / 60);
+        let seconds = totalSeconds - (hour * 3600 + minute * 60);
 
         seconds = seconds < 10 ? "0" + seconds : seconds;
         minute = minute < 10 ? "0" + minute : minute;
