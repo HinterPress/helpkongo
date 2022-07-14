@@ -19,8 +19,20 @@ var totalSeconds = 0;
 
 const questionElement = document.getElementById("question");
 const levelElement = document.getElementById("level");
+const resultBtn = document.getElementById("resultbtn");
 
 levelElement.innerHTML = level;
+
+resultBtn.addEventListener("click", () => {
+    checkResult(-3);
+});
+
+document.getElementById("resultinput").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        resultBtn.click();
+    }
+});
 
 function createAudio(status) {
     const getAudioContent = document.querySelector('.audio');
@@ -32,8 +44,19 @@ getRandContentNumber(questionElement, 2, 10);
 function checkResult(number) {
     const resultPlus = getFirstNumber + getTwoNumber;
     let resultStatus = "";
+
+    var numberInput = false;
+    if (number === -3) {
+        var getInputResult = document.getElementById("resultinput");
+        number = parseInt(getInputResult.value);
+        numberInput = true;
+    }
+
     if (!timeStop) {
         if (resultPlus === number) {
+            if (numberInput) {
+                getInputResult.readOnly = true;
+            }
             createAudio('true');
             resultStatus = "<img src='img/true.png' style='width: 9.1%'>";
             const questionString = getFirstNumber + " + " + getTwoNumber;
@@ -55,8 +78,15 @@ function checkResult(number) {
             setTimeout(() => {
                 timeStop = false;
                 levelRange();
+                if (numberInput) {
+                    getInputResult.readOnly = false;
+                    getInputResult.value = '';
+                }
             }, 500);
         } else {
+            if (numberInput) {
+                getInputResult.value = '';
+            }
             createAudio('falsee');
             resultStatus = "<img src='img/false1.png' style='width: 9.1%'>";
             wrongNumber++;
@@ -181,6 +211,13 @@ function countUpTimer() {
         minute = minute < 10 ? "0" + minute : minute;
         document.getElementById("timeshow").innerHTML = minute + " : " + seconds;
     }
+}
+
+function onlyNumberKey(evt) {
+    var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+    return true;
 }
 
 function levelRange() {

@@ -43,22 +43,6 @@ body{
     font-weight: bold;
 }
 
-#resultbtn{
-    display: inline-block;
-    color: #252537;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background: #fff;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    transition: all 0.2s linear;
-    margin: 7% auto;
-    letter-spacing: 0.05em;
-}
-
 .btn-rand-quest {
   align-self: center;
   background-color: #fff;
