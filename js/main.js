@@ -125,7 +125,8 @@ function start(page) {
         } else {
             lastname.style.setProperty('border-color', '#000', 'important');
         }
-        userInfo.push({ "name": name.value, "lastname": lastname.value });
+        userInfo["name"] = name.value;
+        userInfo["lastname"] = lastname.value;
         getChooseTypeName.classList.remove('d-flex');
         getChooseTypeName.style.display = 'none';
         questionContent.style.display = 'block';

@@ -13,7 +13,8 @@ if (isset($post->user)) {
         'countanswer' => isset($post->questions) ? $post->questions : 0,
         'answtrue' => isset($post->success) ? $post->success : 0,
         'answfalse' => isset($post->wrong) ? $post->wrong : 0,
-        'time' => isset($post->time) ? $post->time : 0
+        'time' => isset($post->time) ? $post->time : 0,
+        'date' => date('Y/m/d')
     ];
     insertData($data);
 }
@@ -21,7 +22,7 @@ if (isset($post->user)) {
 function insertData($data)
 {
     global $conn;
-    $query = "INSERT INTO users (name, lastname, level, countanswer, answtrue, answfalse, time) VALUES (:name, :lastname, :level, :countanswer, :answtrue, :answfalse, :time)";
+    $query = "INSERT INTO users (name, lastname, level, countanswer, answtrue, answfalse, time, date) VALUES (:name, :lastname, :level, :countanswer, :answtrue, :answfalse, :time, :date)";
     $insertData = $conn->prepare($query);
     $insertData->execute($data);
     echo json_encode(['error_code' => 0, 'error_text' => '']);
