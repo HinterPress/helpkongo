@@ -27,3 +27,15 @@ function insertData($data)
     $insertData->execute($data);
     echo json_encode(['error_code' => 0, 'error_text' => '']);
 }
+
+if (isset($_GET['getRating'])) {
+    getRating();
+}
+
+function getRating()
+{
+    global $conn;
+    $stmt = $conn->query("SELECT * FROM users ORDER BY level, time DESC");
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode(['data' => $result, 'error_code' => 0, 'error_text' => '']);
+}

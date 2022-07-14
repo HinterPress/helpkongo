@@ -34,6 +34,13 @@ document.getElementById("resultinput").addEventListener("keypress", function (ev
     }
 });
 
+document.getElementById("lastnameChoose").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        start('questions');
+    }
+});
+
 function createAudio(status) {
     const getAudioContent = document.querySelector('.audio');
     getAudioContent.innerHTML = '<audio controls autoplay><source src="music/' + status + '.mp3" type="audio/mpeg"></audio>';
@@ -85,6 +92,9 @@ function checkResult(number) {
             }, 500);
         } else {
             if (numberInput) {
+                if (getInputResult.value.length === 0) {
+                    return;
+                }
                 getInputResult.value = '';
             }
             createAudio('falsee');
@@ -105,6 +115,7 @@ function start(page) {
     const getChooseTypeName = document.getElementById("choose-type-name");
     const getChooseResult = document.getElementById("choose-result");
     const questionContent = document.getElementById("questions");
+    const ratingContent = document.getElementById("result-table");
     const name = document.getElementById("nameChoose");
     const lastname = document.getElementById("lastnameChoose");
     if (page == 'choose') {
@@ -131,6 +142,11 @@ function start(page) {
         getChooseTypeName.style.display = 'none';
         questionContent.style.display = 'block';
         totalSeconds = 0;
+    } else if (page == 'rating') {
+        getChooseTypeMain.classList.remove('d-flex');
+        getChooseTypeMain.style.display = 'none';
+        ratingContent.style.display = 'inline-block';
+        getData();
     } else if (page == 'result') {
         if (!userInfo['time']) {
             userInfo['time'] = 0;
@@ -142,7 +158,7 @@ function start(page) {
         userInfo['success'] = successNumber;
 
         document.getElementById("resultlevel").innerHTML = level;
-        document.getElementById("countanswer").innerHTML = userInfo['questions'];
+        document.getElementById("countanswer").innerHTML = userInfo['questions'] - 1;
         document.getElementById("resulttrue").innerHTML = userInfo['success'];
         document.getElementById("resultfalse").innerHTML = userInfo['wrong'];
         const secondsToMinutes = Math.floor(userInfo['time'] / 60) + ':' + ('0' + Math.floor(userInfo['time'] % 60)).slice(-2);
@@ -244,4 +260,21 @@ function levelRange() {
         createAudio("nextlevel");
     }
     getRandContentNumber(questionElement, minRandNumber, maxRandNumber);
+}
+
+function getData() {
+    const getTableContentHead = document.getElementById("result-table");
+    var request = new XMLHttpRequest();
+    request.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            getTableContentHead.innerHTML = '<table class="table table-striped"><thead><tr><th>სახელი/გვარი</th><th>დონე</th><th>სწორი</th><th>არასწორი</th><th>დრო</th> </tr> </thead> <tbody></tbody></table>';
+            const bodyTable = getTableContentHead.querySelector("tbody");
+            let data = JSON.parse(this.responseText);
+            data.data.forEach(function (e) {
+                bodyTable.innerHTML += '<tr><td>' + e.name + ' ' + e.lastname + '</td><td>' + e.level + '</td><td>' + e.answtrue + '</td><td>' + e.answfalse + '</td><td>' + e.time + '</td></tr>';
+            });
+        }
+    };
+    request.open('GET', 'api.php?getRating');
+    request.send();
 }

@@ -109,9 +109,6 @@ body{
     box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
 }
 
-a,label,p, h1,h2,h3,h4,h5,h6{
-    font-family: BPGNinoMtavruli;
-}
 
 .audio{
     opacity: 0;
@@ -211,4 +208,15 @@ img{
     font-size: 16px;
     font-weight: bold;
     border: 1px solid #000;
+}
+table{
+    border-bottom-left-radius: 15px 255px;
+    border-bottom-right-radius: 225px 15px;
+    border-top-left-radius: 255px 15px;
+    border-top-right-radius: 15px 225px;
+    border: 1px solid #000;
+    background-color: #fff;
+}
+a,label,p, h1,h2,h3,h4,h5,h6,td,th{
+    font-family: BPGNinoMtavruli;
 }
