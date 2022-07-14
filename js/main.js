@@ -139,12 +139,25 @@ function start(page) {
         getChooseResult.style.display = 'block';
         userInfo['wrong'] = wrongNumber;
         userInfo['success'] = successNumber;
+
         document.getElementById("resultlevel").innerHTML = level;
         document.getElementById("countanswer").innerHTML = userInfo['questions'];
         document.getElementById("resulttrue").innerHTML = userInfo['success'];
         document.getElementById("resultfalse").innerHTML = userInfo['wrong'];
         const secondsToMinutes = Math.floor(userInfo['time'] / 60) + ':' + ('0' + Math.floor(userInfo['time'] % 60)).slice(-2);
         document.getElementById("resulttime").innerHTML = secondsToMinutes;
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("POST", "api.php", true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                // Response
+                var response = this.responseText;
+            }
+        };
+        var data = { user: '1', name: userInfo['name'], lastname: userInfo['lastname'], level: level, questions: userInfo['questions'], success: userInfo['success'], wrong: userInfo['wrong'], time: secondsToMinutes };
+        xhttp.send(JSON.stringify(data));
     }
 }
 
