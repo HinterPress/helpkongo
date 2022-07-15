@@ -17,8 +17,24 @@ if (isset($post->user)) {
         'date' => date('Y/m/d'),
         'ip' => getUserIP()
     ];
-    insertData($data);
+    $userId = insertData($data);
+
+
+    foreach ($post->errorList[0] as $errorList) {
+        questionProblem(['question' => $errorList, 'userid' => (int) $userId]);
+    }
+    echo json_encode(['error_code' => 0, 'error_text' => '']);
 }
+
+function questionProblem($data)
+{
+    global $conn;
+    $query = "INSERT INTO questionproblem (question, user_id) VALUES (:question, :userid)";
+    $insertData = $conn->prepare($query);
+    $insertData->execute($data);
+    echo json_encode(['error_code' => 0, 'error_text' => '']);
+}
+
 
 function insertData($data)
 {
@@ -26,7 +42,8 @@ function insertData($data)
     $query = "INSERT INTO users (name, lastname, level, countanswer, answtrue, answfalse, time, date, ip) VALUES (:name, :lastname, :level, :countanswer, :answtrue, :answfalse, :time, :date, :ip)";
     $insertData = $conn->prepare($query);
     $insertData->execute($data);
-    echo json_encode(['error_code' => 0, 'error_text' => '']);
+    $userId = $conn->lastInsertId();
+    return $userId;
 }
 
 if (isset($_GET['getRating'])) {

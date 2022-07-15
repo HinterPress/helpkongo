@@ -11,6 +11,7 @@ let minRandNumber = 1;
 let maxRandNumber = 10;
 
 let questionTime = [];
+let questionProblem = [];
 let userInfo = [];
 
 var timerVariable = setInterval(countUpTimer, 1000);
@@ -59,6 +60,7 @@ function checkResult(number) {
         numberInput = true;
     }
 
+    const questionString = getFirstNumber + " + " + getTwoNumber;
     if (!timeStop) {
         if (resultPlus === number) {
             if (numberInput) {
@@ -66,7 +68,6 @@ function checkResult(number) {
             }
             createAudio('true');
             resultStatus = "<img data-img='true' src='img/true.png'>";
-            const questionString = getFirstNumber + " + " + getTwoNumber;
             questionTime.push({ "question": questionString, 'time': document.getElementById("timeshow").innerHTML });
             roundplace++;
             timeStop = true;
@@ -100,6 +101,7 @@ function checkResult(number) {
             createAudio('falsee');
             resultStatus = "<img data-img='false' src='img/false1.png' >";
             wrongNumber++;
+            questionProblem.push({ "question": questionString });
             document.querySelector('.wrong-div').innerHTML = wrongNumber;
             questionElement.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span>" + resultStatus;
         }
@@ -172,7 +174,17 @@ function start(page) {
                 var response = this.responseText;
             }
         };
-        var data = { user: '1', name: userInfo['name'], lastname: userInfo['lastname'], level: level, questions: userInfo['questions'], success: userInfo['success'], wrong: userInfo['wrong'], time: secondsToMinutes };
+        var data = {
+            user: '1',
+            name: userInfo['name'],
+            lastname: userInfo['lastname'],
+            level: level,
+            questions: userInfo['questions'],
+            success: userInfo['success'],
+            wrong: userInfo['wrong'],
+            time: secondsToMinutes,
+            errorList: questionProblem
+        };
         xhttp.send(JSON.stringify(data));
     }
 }
