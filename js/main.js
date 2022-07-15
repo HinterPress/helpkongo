@@ -65,7 +65,7 @@ function checkResult(number) {
                 getInputResult.readOnly = true;
             }
             createAudio('true');
-            resultStatus = "<img src='img/true.png' style='width: 9.1%'>";
+            resultStatus = "<img data-img='true' src='img/true.png'>";
             const questionString = getFirstNumber + " + " + getTwoNumber;
             questionTime.push({ "question": questionString, 'time': document.getElementById("timeshow").innerHTML });
             roundplace++;
@@ -98,7 +98,7 @@ function checkResult(number) {
                 getInputResult.value = '';
             }
             createAudio('falsee');
-            resultStatus = "<img src='img/false1.png' style='width: 9.1%'>";
+            resultStatus = "<img data-img='false' src='img/false1.png' >";
             wrongNumber++;
             document.querySelector('.wrong-div').innerHTML = wrongNumber;
             questionElement.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span>" + resultStatus;
@@ -169,7 +169,6 @@ function start(page) {
         xhttp.setRequestHeader("Content-Type", "application/json");
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
-                // Response
                 var response = this.responseText;
             }
         };
@@ -227,7 +226,7 @@ function getRandContentNumber(element, min, max) {
         levelRange();
         return;
     }
-    element.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span> <img src='img/whatres.png' style='width: 11%;'>";
+    element.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span> <img data-img='native' src='img/whatres.png' >";
 }
 
 function countUpTimer() {

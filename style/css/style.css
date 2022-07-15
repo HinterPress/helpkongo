@@ -220,3 +220,30 @@ table{
 a,label,p, h1,h2,h3,h4,h5,h6,td,th{
     font-family: BPGNinoMtavruli;
 }
+
+img[data-img="true"] {
+    width: 9.1%
+  }
+
+  img[data-img="native"] {
+    width: 11%;
+}
+img[data-img="false"] {
+    width: 9.1%
+  }
+img[data-img="main"] {
+    width: 30%
+  }
+
+
+  @media only screen and (max-width: 600px) {
+    img[data-img="native"] {
+        width: 17%;
+    }
+    img[data-img="false"] {
+        width: 14.1%
+      }
+    img[data-img="true"] {
+        width: 14.1%
+      }
+  }
