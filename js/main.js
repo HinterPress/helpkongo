@@ -158,7 +158,7 @@ function start(page) {
         userInfo['success'] = successNumber;
 
         document.getElementById("resultlevel").innerHTML = level;
-        document.getElementById("countanswer").innerHTML = userInfo['questions'] - 1;
+        // document.getElementById("countanswer").innerHTML = userInfo['questions'] - 1;
         document.getElementById("resulttrue").innerHTML = userInfo['success'];
         document.getElementById("resultfalse").innerHTML = userInfo['wrong'];
         const secondsToMinutes = Math.floor(userInfo['time'] / 60) + ':' + ('0' + Math.floor(userInfo['time'] % 60)).slice(-2);
