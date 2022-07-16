@@ -13,6 +13,8 @@ let maxRandNumber = 10;
 let questionTime = [];
 let questionProblem = [];
 let userInfo = [];
+let contentQuestion = "";
+let answerNumber = 0;
 
 var timerVariable = setInterval(countUpTimer, 1000);
 var timeStop = false;
@@ -50,7 +52,6 @@ function createAudio(status) {
 getRandContentNumber(questionElement, 2, 10);
 
 function checkResult(number) {
-    const resultPlus = getFirstNumber + getTwoNumber;
     let resultStatus = "";
 
     var numberInput = false;
@@ -59,10 +60,9 @@ function checkResult(number) {
         number = parseInt(getInputResult.value);
         numberInput = true;
     }
-
-    const questionString = getFirstNumber + " + " + getTwoNumber;
+    const questionString = contentQuestion;
     if (!timeStop) {
-        if (resultPlus === number) {
+        if (answerNumber === number) {
             if (numberInput) {
                 getInputResult.readOnly = true;
             }
@@ -82,7 +82,6 @@ function checkResult(number) {
             successNumber++;
             userInfo['questions'] = userInfo['questions'] += 1;
             document.querySelector('.success-div').innerHTML = successNumber;
-            questionElement.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span>" + resultStatus;
             setTimeout(() => {
                 timeStop = false;
                 levelRange();
@@ -103,7 +102,6 @@ function checkResult(number) {
             wrongNumber++;
             questionProblem.push({ "question": questionString });
             document.querySelector('.wrong-div').innerHTML = wrongNumber;
-            questionElement.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span>" + resultStatus;
         }
     }
 }
@@ -195,6 +193,10 @@ function getRandContentNumber(element, min, max) {
 
     let getFirstNumberArray = [];
     let getTwoNumberArray = [];
+    let contentQuestion = "";
+    let actionArray = ['-', '+'];
+
+    let ActionReturn = actionArray[Math.floor(Math.random() * actionArray.length)];
 
     for (let index = 0; index < 5; index++) {
         let numberFirst = generateRandomIntegerInRange(min, max);
@@ -214,7 +216,17 @@ function getRandContentNumber(element, min, max) {
 
     getFirstNumber = getFirstNumberArray[Math.floor(Math.random() * getFirstNumberArray.length)];
     getTwoNumber = getTwoNumberArray[Math.floor(Math.random() * getTwoNumberArray.length)];
-    let answerNumber = getFirstNumber + getTwoNumber;
+
+    if (ActionReturn == '-') {
+        if (getFirstNumber > getTwoNumber) {
+            answerNumber = getFirstNumber - getTwoNumber;
+        } else {
+            answerNumber = getTwoNumber - getFirstNumber;
+        }
+    } else if (ActionReturn == '+') {
+        answerNumber = getFirstNumber + getTwoNumber;
+    }
+
     let numberAnswer = [answerNumber];
 
     for (let index = 0; index < 3; index++) {
@@ -238,7 +250,17 @@ function getRandContentNumber(element, min, max) {
         levelRange();
         return;
     }
-    element.innerHTML = "<span>" + getFirstNumber + "+" + getTwoNumber + " = </span> <img data-img='native' src='img/whatres.png' >";
+
+    if (ActionReturn == '+') {
+        contentQuestion = getFirstNumber + "+" + getTwoNumber;
+    } else if (ActionReturn == '-') {
+        if (getFirstNumber > getTwoNumber) {
+            contentQuestion = getFirstNumber + "-" + getTwoNumber;
+        } else {
+            contentQuestion = getTwoNumber + "-" + getFirstNumber;
+        }
+    }
+    element.innerHTML = "<span>" + contentQuestion + " = </span> <img data-img='native' src='img/whatres.png' >";
 }
 
 function countUpTimer() {
