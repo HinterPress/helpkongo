@@ -7,8 +7,8 @@ $post = json_decode(file_get_contents("php://input"));
 
 if (isset($post->user)) {
     $data = [
-        'name' => isset($post->name) ? $post->name : '',
-        'lastname' => isset($post->lastname) ? $post->lastname : '',
+        'name' => isset($post->name) ? strlen($post->name) < 11 ? $post->name : 'სახელი' : 'სახელი',
+        'lastname' => isset($post->lastname) ? strlen($post->lastname) < 30 ? $post->lastname : 'გვარი' : 'გვარი',
         'level' => isset($post->level) ? $post->level : 0,
         'countanswer' => isset($post->questions) ? $post->questions : 0,
         'answtrue' => isset($post->success) ? $post->success : 0,
@@ -53,8 +53,7 @@ if (isset($_GET['getRating'])) {
 function getRating()
 {
     global $conn;
-    $stmt = $conn->query("SELECT name, lastname, level, answtrue, answfalse, time FROM users ORDER BY level, time DESC");
-
+    $stmt = $conn->query("SELECT name, lastname, level, answtrue, answfalse, time FROM users");
     $getData = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($getData as $key => $value) {
