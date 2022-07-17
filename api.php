@@ -18,10 +18,10 @@ if (isset($post->user)) {
         'ip' => getUserIP()
     ];
     $userId = insertData($data);
-
-
-    foreach ($post->errorList[0] as $errorList) {
-        questionProblem(['question' => $errorList, 'userid' => (int) $userId]);
+    if (isset($post->errorList[0])) {
+        foreach ($post->errorList[0] as $errorList) {
+            questionProblem(['question' => $errorList, 'userid' => (int) $userId]);
+        }
     }
     echo json_encode(['error_code' => 0, 'error_text' => '']);
 }
@@ -53,11 +53,22 @@ if (isset($_GET['getRating'])) {
 function getRating()
 {
     global $conn;
-    $stmt = $conn->query("SELECT * FROM users ORDER BY level, time DESC");
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode(['data' => $result, 'error_code' => 0, 'error_text' => '']);
-}
+    $stmt = $conn->query("SELECT name, lastname, level, answtrue, answfalse, time FROM users ORDER BY level, time DESC");
 
+    $getData = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($getData as $key => $value) {
+        $time = $value['time'];
+        $finTime = (int) explode(':', "$time", 2)[0] * 60 + (int) explode(':', "$time", 2)[1];
+        $calcResult = ($value['answtrue'] - $value['answfalse']) / $finTime;
+        $getData[$key]['sortResult'] = $calcResult;
+        $getData[$key]['name'] = strip_tags($getData[$key]['name']);
+        $getData[$key]['lastname'] = strip_tags($getData[$key]['lastname']);
+    }
+    array_multisort(array_column($getData, 'sortResult'), SORT_DESC, $getData);
+
+    echo json_encode(['data' => $getData, 'error_code' => 0, 'error_text' => '']);
+}
 
 function getUserIP()
 {
