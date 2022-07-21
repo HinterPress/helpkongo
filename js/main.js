@@ -67,7 +67,8 @@ function checkResult(number) {
                 getInputResult.readOnly = true;
             }
             createAudio('true');
-            resultStatus = "<img data-img='true' src='img/true.png'>";
+            // resultStatus = "<img data-img='true' src='img/true.png'>";
+            resultStatus = "img/true.png";
             questionTime.push({ "question": questionString, 'time': document.getElementById("timeshow").innerHTML });
             roundplace++;
             timeStop = true;
@@ -82,6 +83,8 @@ function checkResult(number) {
             successNumber++;
             userInfo['questions'] = userInfo['questions'] += 1;
             document.querySelector('.success-div').innerHTML = successNumber;
+            questionElement.querySelector("img").src = resultStatus;
+
             setTimeout(() => {
                 timeStop = false;
                 levelRange();
@@ -98,7 +101,10 @@ function checkResult(number) {
                 getInputResult.value = '';
             }
             createAudio('falsee');
-            resultStatus = "<img data-img='false' src='img/false1.png' >";
+            // resultStatus = "<img data-img='false' src='img/false1.png' >";
+            resultStatus = "img/false1.png";
+            questionElement.querySelector("img").src = resultStatus;
+
             wrongNumber++;
             questionProblem.push({ "question": questionString });
             document.querySelector('.wrong-div').innerHTML = wrongNumber;
